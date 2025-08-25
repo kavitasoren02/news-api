@@ -1,6 +1,6 @@
 
 import NewsItem from "./NewsItem";
-import { useState,useEffect } from "react";
+import { useState,useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import Spinner from "./Spinner";
 import LoadingBar from 'react-top-loading-bar';
@@ -57,7 +57,7 @@ export default function News(props) {
     const pageSize=props.pageSize;
     const category=props.category;
     
-    const getPost=async()=>{
+    const getPost=useCallback(async()=>{
         setProgress(0);
     try
     {
@@ -77,10 +77,10 @@ export default function News(props) {
 }catch(error){
     console.error("error fetching news",error);
 }
-};
+},[page, pageSize, props.category, props.country])
 useEffect(() => {
     getPost();
-}, [page,category]);
+}, [page,category,getPost]);
 
  const handlePrevclick = async () => {
     // console.log("previous");
